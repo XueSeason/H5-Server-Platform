@@ -4,20 +4,26 @@ A static web resource release platform for hybrid development.
 
 # How to started
 
-1. create directory
+### 0.install dependencies
+
+```
+npm install
+```
+
+### 1.create directory
 
 ```bash
 node deploy.js
 ```
 
-2. generate ssl
+### 2.generate ssl
 
 ```bash
 cd rsa
 openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
 ```
 
-3. start app
+### 3.start app
 
 ```bash
 node app.js
