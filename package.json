@@ -1,0 +1,20 @@
+{
+  "name": "h5-server-platform",
+  "version": "1.0.0",
+  "description": "For xiaoying HTML5 hybrid server, include version control, config option, cert etc. ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "XueSeason",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "formidable": "^1.0.17",
+    "fstream": "^1.0.10",
+    "shelljs": "^0.7.4",
+    "tar": "^2.2.1",
+    "xml": "^1.0.1"
+  }
+}
