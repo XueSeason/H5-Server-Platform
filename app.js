@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
+const packconfig = require('./routers/packconfig')
 const resource = require('./routers/resource')
 const upload = require('./routers/upload')
 
@@ -24,6 +25,8 @@ app.get('/', function (req, res) {
   )
 })
 
+// get pack config
+app.use('/static/', packconfig)
 // serach for resource
 app.use('/resource', resource)
 // upload file

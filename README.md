@@ -32,11 +32,11 @@ open http://localhost:4000
 
 # API
 
-## GET /resource/:appId/:version/:filename
+## GET /resource/:branch/:appId/:version/:filename
 
 get specify file.
 
-## POST /upload
+## POST /upload/:branch
 
 | Params  | Type  | Desc                  |
 | ------- |:-----:| :---------------------|
@@ -47,7 +47,7 @@ get specify file.
 
 post specify tar file or you can open / to upload file by friendly view.
 
-# static resource structure
+# Static resource structure
 
 ```markdown
 - ${appId}
@@ -56,3 +56,13 @@ post specify tar file or you can open / to upload file by friendly view.
     - CERT.json
     - Manifest.xml
 ```
+
+# Project structure and workflow
+
+![](http://ww2.sinaimg.cn/large/aa0fbcc4gw1f980kccqxnj20gs0cut9j.jpg)
+
+![](http://ww4.sinaimg.cn/large/aa0fbcc4gw1f980lews5bj20ew0k4wf5.jpg)
+
+# Author
+
+@XueSeason
