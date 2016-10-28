@@ -1,12 +1,16 @@
 const fs = require('fs')
 const path = require('path')
 
-exports.resource = function (req, res, next) {
+const express = require('express')
+const router = express.Router()
+
+router.get('/:branch/:appId/:version/:filename', function (req, res) {
+  const branch = req.params.branch
   const appId = req.params.appId
   const version = req.params.version
   const filename = req.params.filename
 
-  const dir = path.resolve(__dirname, `../resource/${appId}/${version}/${filename}`)
+  const dir = path.resolve(__dirname, `../resource/${branch}/${appId}/${version}/${filename}`)
 
   if (!fs.existsSync(dir)) {
     res.writeHead(200, {'content-type': 'application/json'})
@@ -14,4 +18,6 @@ exports.resource = function (req, res, next) {
   }
 
   res.sendFile(dir)
-}
+})
+
+module.exports = router

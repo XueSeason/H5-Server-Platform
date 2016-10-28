@@ -6,8 +6,12 @@ const util = require('util')
 const formidable = require('formidable')
 const package = require('../service/package')
 
-exports.upload = function (req, res, next) {
-  var form = new formidable.IncomingForm()
+const express = require('express')
+const router = express.Router()
+
+router.post('/:branch', function (req, res) {
+  const branch = req.params.branch
+  const form = new formidable.IncomingForm()
   form.encoding = 'utf-8'
   form.uploadDir = filepath.dist
   form.keepExtensions = true
@@ -23,9 +27,11 @@ exports.upload = function (req, res, next) {
       res.writeHead(200, {'content-type': 'text/plain'})
       res.write(err.toString())
     }
-    package(fields.appId, fields.name, fields.version)
+    package(branch, fields.appId, fields.name, fields.version)
     res.writeHead(200, {'content-type': 'text/plain'})
     res.write('received upload:\n\n')
     res.end(util.inspect({fields: fields, files: files}))
   })
-}
+})
+
+module.exports = router

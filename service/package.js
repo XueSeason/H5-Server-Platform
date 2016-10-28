@@ -9,9 +9,7 @@ const extract = require('../common//tar').extract.promise
 const writeFile = require('../common/file').writeFile.promise
 const clearDir = require('../common/file').clearDir.promise
 
-module.exports = function (appId, name, version) {
-  const branch = 'dev'
-
+module.exports = function (branch, appId, name, version) {
   const packDir = (filepath.packDir(appId, version))[branch]
   const tarDir = (filepath.tarDir(appId, version))[branch]
   const xmlDir = (filepath.manifestDir(appId, version))[branch]
