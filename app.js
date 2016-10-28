@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/', function (req, res) {
-  res.writeHead(200, {'content-type': 'text/html'})
+  res.writeHead(200, { 'content-type': 'text/html' })
   res.end(
     '<form action="/upload/pre" enctype="multipart/form-data" method="post">'+
     'App ID: <input type="text" name="appId"><br>'+

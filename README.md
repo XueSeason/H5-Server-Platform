@@ -39,7 +39,7 @@ get specify file.
 ## POST /upload
 
 | Params  | Type  | Desc                  |
-| ------- |:-----:| ---------------------:|
+| ------- |:-----:| :---------------------|
 | appId   | text  | hybrid app id         |
 | name    | text  | hybrid page name      |
 | version | text  | hybrid page version   |

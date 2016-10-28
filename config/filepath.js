@@ -31,7 +31,7 @@ const manifestDir = function (appId, version) {
   return {
     dev: path.resolve(resource, 'dev', appId, version, 'Manifest.xml'),
     pre: path.resolve(resource, 'pre', appId, version, 'Manifest.xml'),
-    prod: path.resolve(resource, 'prod', appId, version, 'Manifest.xml'),
+    prod: path.resolve(resource, 'prod', appId, version, 'Manifest.xml')
   }
 }
 

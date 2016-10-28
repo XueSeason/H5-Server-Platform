@@ -13,7 +13,7 @@ router.get('/:branch/:appId/:version/:filename', function (req, res) {
   const dir = path.resolve(__dirname, `../resource/${branch}/${appId}/${version}/${filename}`)
 
   if (!fs.existsSync(dir)) {
-    res.writeHead(200, {'content-type': 'application/json'})
+    res.writeHead(200, { 'content-type': 'application/json' })
     res.end(JSON.stringify({ error: 'no such directory or file!' }))
   }
 
