@@ -15,7 +15,7 @@ module.exports = function (branch, appId, name, version) {
   const xmlDir = (filepath.manifestDir(appId, version))[branch]
 
   const option = { appId, name, version, branch }
-  extract(path.resolve(filepath.dist, 'resource.tar'), filepath.dist).then(() => {
+  return extract(path.resolve(filepath.dist, 'resource.tar'), filepath.dist).then(() => {
     const q0 = manifest(option).then(() => console.log('create manifest success'))
     const q1 = tar(option).then(() => console.log(`create ${appId}.tar success`))
 

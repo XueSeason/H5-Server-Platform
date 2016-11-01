@@ -32,7 +32,7 @@ open http://localhost:4000
 
 ## API
 
-### GET /:appId/:version
+### GET /static/:appId/:version
 
 get static resource pack config
 
@@ -52,9 +52,9 @@ post JSON params
 | -------- |:-----:| :--------------------------|:--------:|
 | name     | text  | hybrid page name           | true     |
 | version  | text  | hybrid page version        | true     |
-| dev      | text  | dev env download link      | true     |
-| pre      | text  | dev pre download link      | true     |
-| prod     | text  | prod env download link     | true     |
+| dev      | text  | dev env host map link      | true     |
+| pre      | text  | dev pre host map link      | true     |
+| prod     | text  | prod env host map link     | true     |
 | version  | text  | hybrid page version        | true     |
 | fallback | text  | cdn fallback download link | true     |
 
@@ -67,11 +67,11 @@ post JSON params
 | Params   | Type  | Desc                       | required |
 | -------- |:-----:| :--------------------------|:--------:|
 | app_id   | text  | pack id                    | true     |
+| version  | text  | hybrid page version        | true     |
 | name     | text  | hybrid page name           | false    |
-| version  | text  | hybrid page version        | false    |
-| dev      | text  | dev env download link      | false    |
-| pre      | text  | dev pre download link      | false    |
-| prod     | text  | prod env download link     | false    |
+| dev      | text  | dev env host map link      | false    |
+| pre      | text  | dev pre host map link      | false    |
+| prod     | text  | prod env host map link     | false    |
 | version  | text  | hybrid page version        | false    |
 | fallback | text  | cdn fallback download link | false    |
 
@@ -84,6 +84,7 @@ post JSON params
 | Params   | Type  | Desc                       | required |
 | -------- |:-----:| :--------------------------|:--------:|
 | app_id   | text  | pack id                    | true     |
+| version  | text  | hybrid page version        | true     |
 
 ### GET /resource/:branch/:appId/:version/:filename
 

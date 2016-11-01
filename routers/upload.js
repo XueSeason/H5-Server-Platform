@@ -5,11 +5,12 @@ const util = require('util')
 
 const formidable = require('formidable')
 const package = require('../service/package')
+const resourceDao = require('../dao/resouceDao')
 
 const express = require('express')
 const router = express.Router()
 
-router.post('/:branch', function (req, res) {
+router.post('/:branch', function (req, res, next) {
   const branch = req.params.branch
   const form = new formidable.IncomingForm()
   form.encoding = 'utf-8'
@@ -26,10 +27,15 @@ router.post('/:branch', function (req, res) {
       res.writeHead(200, { 'content-type': 'text/plain' })
       res.write(err.toString())
     }
-    package(branch, fields.appId, fields.name, fields.version)
-    res.writeHead(200, { 'content-type': 'text/plain' })
-    res.write('received upload:\n\n')
-    res.end(util.inspect({fields: fields, files: files}))
+    package(branch, fields.appId, fields.name, fields.version).then(() => {
+      req.body.app_id = fields.appId
+      req.body.version = fields.version
+      req.body.branch = branch
+      return resourceDao.add(req, res, next)
+    }).catch(err => {
+      res.writeHead(200, { 'content-type': 'application/json' })
+      res.end(JSON.stringify({ err: err.toString() }))
+    })
   })
 })
 

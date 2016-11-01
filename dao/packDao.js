@@ -21,7 +21,13 @@ function add(req, res, next) {
   values.push(req.body.version)
   values.push(req.body.fallback)
   values.push(req.body.app_id)
-  db.query(sql.insert, values).then(rows => {
+  db.query(sql.queryByAppIdAndVersion, [req.body.app_id, req.body.version]).then(rows => {
+    if (Array.isArray(rows) && rows.length > 0) {
+      throw new Error('存在重复数据')
+    } else {
+      return db.query(sql.insert, values)
+    }
+  }).then(rows => {
    res.writeHead(200, { 'content-type': 'application/json' })
     res.end(JSON.stringify(rows))
   }).catch(err => {
@@ -32,7 +38,8 @@ function add(req, res, next) {
 
 function remove(req, res, next) {
   const appId = req.body.app_id
-  db.query(sql.remove, appId).then(rows => {
+  const version = req.body.version
+  db.query(sql.remove, [appId, version]).then(rows => {
    res.writeHead(200, { 'content-type': 'application/json' })
     res.end(JSON.stringify(rows))
   }).catch(err => {
@@ -43,8 +50,9 @@ function remove(req, res, next) {
 
 function update(req, res, next) {
   const appId = req.body.app_id
+  const version = req.body.version
   const record = req.body
-  db.query(sql.update(record, appId)).then(rows => {
+  db.query(sql.update(record, appId, version)).then(rows => {
    res.writeHead(200, { 'content-type': 'application/json' })
     res.end(JSON.stringify(rows))
   }).catch(err => {

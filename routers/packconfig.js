@@ -1,31 +1,39 @@
 const express = require('express')
 const router = express.Router()
 
+const db = require('../common/db')
+const sql = require('../dao/packSqlMapping')
+const appUrl = require('../service/resource').appUrl
+
 router.get('/:appId/:version', function (req, res) {
   const appId = req.params.appId
   const version = req.params.version
   // read data from db and reduce data.
-  const config = {
-    url: "/slideplus/home.html",
-    params: {
-      showTitleBar: true,
-      showProgress: false
-    },
-    appUrl: {
-      dev: "http://xxxx/xx.tar",
-      prod: "http://xxxx/xx.tar",
-      pre: "http://xxxx/xx.tar"
-    },
-    host: {
-      dev: "http://www.xiaoying.tv",
-      prod: "http://www.xiaoying.tv",
-      pre: "http://pre.xiaoying.tv"
-    },
-    version: "2.0.0",
-    fallback: "http://cdn.xiaoying.tv"
-  }
-  res.writeHead(200, { 'content-type': 'application/json' })
-  res.end(JSON.stringify(config))
+  db.query(sql.queryByAppIdAndVersion, [appId, version]).then(rows => {
+    if (Array.isArray(rows) && rows.length > 0) {
+      const record = rows[0]
+      const obj = {
+        name: record.name,
+        params: record.params,
+        appUrl: appUrl(appId, version),
+        host: {
+          dev: record.dev,
+          pre: record.pre,
+          prod: record.prod
+        },
+        version: record.version,
+        fallback: record.fallback
+      }
+      res.writeHead(200, { 'content-type': 'application/json' })
+      res.end(JSON.stringify(obj))
+    } else {
+      res.writeHead(200, { 'content-type': 'application/json' })
+      res.end(JSON.stringify({ err: '数据不存在' }))
+    }
+  }).catch(err => {
+    res.writeHead(200, { 'content-type': 'application/json' })
+    res.end(JSON.stringify({ err: err.toString() }))
+  })
 })
 
 module.exports = router
