@@ -66,7 +66,7 @@ post JSON params
 
 | Params   | Type  | Desc                       | required |
 | -------- |:-----:| :--------------------------|:--------:|
-| id       | text  | pack id                    | true     |
+| app_id   | text  | pack id                    | true     |
 | name     | text  | hybrid page name           | false    |
 | version  | text  | hybrid page version        | false    |
 | dev      | text  | dev env download link      | false    |
@@ -83,7 +83,7 @@ post JSON params
 
 | Params   | Type  | Desc                       | required |
 | -------- |:-----:| :--------------------------|:--------:|
-| id       | text  | pack id                    | true     |
+| app_id   | text  | pack id                    | true     |
 
 ### GET /resource/:branch/:appId/:version/:filename
 

@@ -20,6 +20,7 @@ function add(req, res, next) {
   values.push(req.body.prod)
   values.push(req.body.version)
   values.push(req.body.fallback)
+  values.push(req.body.app_id)
   db.query(sql.insert, values).then(rows => {
    res.writeHead(200, { 'content-type': 'application/json' })
     res.end(JSON.stringify(rows))
@@ -30,8 +31,8 @@ function add(req, res, next) {
 }
 
 function remove(req, res, next) {
-  const id = req.body.id
-  db.query(sql.remove, id).then(rows => {
+  const appId = req.body.app_id
+  db.query(sql.remove, appId).then(rows => {
    res.writeHead(200, { 'content-type': 'application/json' })
     res.end(JSON.stringify(rows))
   }).catch(err => {
@@ -41,9 +42,9 @@ function remove(req, res, next) {
 }
 
 function update(req, res, next) {
-  const id = req.body.id
+  const appId = req.body.app_id
   const record = req.body
-  db.query(sql.update(record, id)).then(rows => {
+  db.query(sql.update(record, appId)).then(rows => {
    res.writeHead(200, { 'content-type': 'application/json' })
     res.end(JSON.stringify(rows))
   }).catch(err => {
