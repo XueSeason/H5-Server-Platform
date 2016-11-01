@@ -16,7 +16,10 @@ exports.extract = {
   promise: function (orignpath, destpath) {
     return new Promise((resolve, reject) => {
       extract(orignpath, destpath, err => {
-        if (err) reject(err)
+        if (err) {
+          reject(err)
+          return
+        }
         resolve()
       })
     })

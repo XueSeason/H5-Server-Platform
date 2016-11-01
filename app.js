@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
+const pack = require('./routers/pack')
 const packconfig = require('./routers/packconfig')
 const resource = require('./routers/resource')
 const upload = require('./routers/upload')
@@ -31,6 +32,8 @@ app.use('/static/', packconfig)
 app.use('/resource', resource)
 // upload file
 app.use('/upload', upload)
+// control pack
+app.use('/pack', pack)
 
 app.listen(4000, function () {
   console.log('Server listening at 4000.');

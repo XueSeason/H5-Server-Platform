@@ -32,7 +32,10 @@ exports.manifest = _
 exports.promise = function (option) {
   return new Promise((resolve, reject) => {
     _(option, err => {
-      if (err) reject(err)
+      if (err) {
+        reject(err)
+        return
+      }
       resolve()
     })
   })
