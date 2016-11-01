@@ -49,7 +49,10 @@ exports.promise = {
   signFile: function (pathname, cb) {
     return new Promise((resolve, reject) => {
       _.signFile(pathname, (err, data) => {
-        if (err) reject(err)
+        if (err) {
+          reject(err)
+          return
+        }
         resolve(data)
       })
     })
@@ -57,7 +60,10 @@ exports.promise = {
   verifyFile: function (pathname, signature, cb) {
     return new Promise((resolve, reject) => {
       _.verifyFile(pathname, signature, (err, data) => {
-        if (err) reject(err)
+        if (err) {
+          reject(err)
+          return
+        }
         resolve(data)
       })
     })

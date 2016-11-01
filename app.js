@@ -1,7 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const file = require('./middleware/file')
-const api = require('./middleware/api')
+
+const pack = require('./routers/pack')
+const packconfig = require('./routers/packconfig')
+const resource = require('./routers/resource')
+const upload = require('./routers/upload')
 
 const app = express()
 
@@ -11,9 +14,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/', function (req, res) {
-  res.writeHead(200, {'content-type': 'text/html'})
+  res.writeHead(200, { 'content-type': 'text/html' })
   res.end(
-    '<form action="/upload" enctype="multipart/form-data" method="post">'+
+    '<form action="/upload/pre" enctype="multipart/form-data" method="post">'+
     'App ID: <input type="text" name="appId"><br>'+
     'Name: <input type="text" name="name"><br>'+
     'Version: <input type="text" name="version"><br>'+
@@ -23,10 +26,14 @@ app.get('/', function (req, res) {
   )
 })
 
+// get pack config
+app.use('/static/', packconfig)
 // serach for resource
-app.get('/resource/:appId/:version/:filename', api.resource)
-
-app.post('/upload', file.upload)
+app.use('/resource', resource)
+// upload file
+app.use('/upload', upload)
+// control pack
+app.use('/pack', pack)
 
 app.listen(4000, function () {
   console.log('Server listening at 4000.');

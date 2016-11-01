@@ -1,8 +1,5 @@
-const path = require('path')
+const db = require('./db')
+const pack = require('../dao/packSqlMapping')
 
-const clearDir = require('./file').clearDir.promise
-clearDir(path.resolve(__dirname, '../dist/')).then(() => console.log('done')).catch(err => console.log(err))
-
-// const extract = require('./tar').extract.promise
-// const dest = path.resolve(__dirname, '../dist/')
-// extract(path.resolve(dest, 'resource.tar'), dest).then(() => console.log('done')).catch(err => console.log(err))
+db.query(pack.queryById, 1).then(rows => console.log('rows', rows)).catch(err => console.log('err', err))
+db.query(pack.queryAll).then(rows => console.log('rows', rows)).catch(err => console.log('err', err))

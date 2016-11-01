@@ -58,7 +58,10 @@ exports.clearDir = {
   promise: function (dir) {
     return new Promise((resolve, reject) => {
       clearDir(dir, err => {
-        if (err) reject(err)
+        if (err) {
+          reject(err)
+          return
+        }
         resolve()
       })
     })

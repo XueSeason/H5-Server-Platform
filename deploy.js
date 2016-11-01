@@ -4,7 +4,9 @@ const shell = require('shelljs')
 shell.mkdir('dist')
 
 // for tar resource file
-shell.mkdir('resource')
+shell.mkdir('-p', 'resource/dev')
+shell.mkdir('-p', 'resource/pre')
+shell.mkdir('-p', 'resource/prod')
 
 // for security Verification
 shell.mkdir('rsa')
