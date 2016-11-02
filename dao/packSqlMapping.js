@@ -1,5 +1,5 @@
 const pack = {
-	insert: 'INSERT INTO pack(id, name, params, dev, pre, prod, version, fallback, app_id) VALUES(0,?,?,?,?,?,?,?,?)',
+	insert: 'INSERT INTO pack(id, name, params, dev, pre, prod, version, app_id) VALUES(0,?,?,?,?,?,?,?)',
 	update: (record, appId, version) => {
     const arr = []
     Object.keys(record).forEach(key => {

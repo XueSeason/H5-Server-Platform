@@ -6,6 +6,7 @@ const util = require('util')
 const formidable = require('formidable')
 const package = require('../service/package')
 const resourceDao = require('../dao/resouceDao')
+const oss = require('../service/oss')
 
 const express = require('express')
 const router = express.Router()
@@ -32,6 +33,8 @@ router.post('/:branch', function (req, res, next) {
       req.body.version = fields.version
       req.body.branch = branch
       return resourceDao.add(req, res, next)
+    }).then(() => {
+      oss.putResource(branch, fields.appId, fields.version)
     }).catch(err => {
       res.writeHead(200, { 'content-type': 'application/json' })
       res.end(JSON.stringify({ err: err.toString() }))

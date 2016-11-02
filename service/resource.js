@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const oss = require('../common/oss')
 const config = require('../config/project')
 
 function generateFilename(type, appId) {
@@ -32,5 +33,10 @@ function appUrl(appId, version) {
   return obj
 }
 
+function fallback(branch, appId, version) {
+  return `${config.cdnDomain}/${config.product}/pack/${branch}/${appId}/${version}/${appId}.tar`
+}
+
 exports.existsResource = existsResource
 exports.appUrl = appUrl
+exports.fallback = fallback

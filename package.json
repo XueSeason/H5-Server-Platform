@@ -9,7 +9,9 @@
   "author": "XueSeason",
   "license": "ISC",
   "dependencies": {
+    "ali-oss": "^4.6.2",
     "body-parser": "^1.15.2",
+    "co": "^4.6.0",
     "express": "^4.14.0",
     "formidable": "^1.0.17",
     "fstream": "^1.0.10",

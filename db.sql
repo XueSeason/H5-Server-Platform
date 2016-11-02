@@ -6,7 +6,6 @@ CREATE TABLE `h5_static`.`pack` (
 	`pre` varchar(200) NOT NULL,
 	`prod` varchar(200) NOT NULL,
 	`version` varchar(10) NOT NULL,
-	`fallback` varchar(200) NOT NULL,
 	`state` int(1) NOT NULL DEFAULT 0 COMMENT '0 禁用 1 启用',
 	`app_id` varchar(10) NOT NULL,
 	PRIMARY KEY (`id`)

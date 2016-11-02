@@ -56,7 +56,6 @@ post JSON params
 | pre      | text  | dev pre host map link      | true     |
 | prod     | text  | prod env host map link     | true     |
 | version  | text  | hybrid page version        | true     |
-| fallback | text  | cdn fallback download link | true     |
 
 #### POST /pack/update
 
@@ -73,7 +72,6 @@ post JSON params
 | pre      | text  | dev pre host map link      | false    |
 | prod     | text  | prod env host map link     | false    |
 | version  | text  | hybrid page version        | false    |
-| fallback | text  | cdn fallback download link | false    |
 
 #### POST /pack/remove
 

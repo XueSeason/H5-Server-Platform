@@ -19,7 +19,6 @@ function add(req, res, next) {
   values.push(req.body.pre)
   values.push(req.body.prod)
   values.push(req.body.version)
-  values.push(req.body.fallback)
   values.push(req.body.app_id)
   db.query(sql.queryByAppIdAndVersion, [req.body.app_id, req.body.version]).then(rows => {
     if (Array.isArray(rows) && rows.length > 0) {
