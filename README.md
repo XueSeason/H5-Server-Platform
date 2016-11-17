@@ -2,8 +2,6 @@
 
 Hybrid 静态资源包发布平台
 
-线上环境：http://h5rs.api.xiaoying.co
-
 ## How to started
 
 ### 0.install dependencies
