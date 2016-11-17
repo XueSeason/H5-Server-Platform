@@ -3,6 +3,7 @@ const path = require('path')
 const dist = path.resolve(__dirname, '../dist/')
 const resource = path.resolve(__dirname, '../resource/')
 
+// 资源包路径
 const packDir = function (appId, version) {
   return {
     dev: path.resolve(resource, 'dev', appId, version),
@@ -11,6 +12,7 @@ const packDir = function (appId, version) {
   }
 }
 
+// tar 包路径
 const tarDir = function (appId, version) {
   return {
     dev: path.resolve(resource, 'dev', appId, version, `${appId}.tar`),
@@ -19,6 +21,7 @@ const tarDir = function (appId, version) {
   }
 }
 
+// 验证信息路径
 const certDir = function (appId, version) {
   return {
     dev: path.resolve(resource, 'dev', appId, version, 'CERT.json'),
@@ -27,6 +30,7 @@ const certDir = function (appId, version) {
   }
 }
 
+// 配置文件路径
 const manifestDir = function (appId, version) {
   return {
     dev: path.resolve(resource, 'dev', appId, version, 'Manifest.xml'),
@@ -35,7 +39,9 @@ const manifestDir = function (appId, version) {
   }
 }
 
+// 本地证书路径
 const certPem = path.resolve(__dirname, '../rsa/cert.pem')
+// 本地私钥路径
 const keyPem = path.resolve(__dirname, '../rsa/key.pem')
 
 exports.dist = dist

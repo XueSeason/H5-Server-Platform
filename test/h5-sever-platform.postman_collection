@@ -1,0 +1,330 @@
+{
+	"variables": [],
+	"info": {
+		"name": "h5-sever-platform",
+		"_postman_id": "67f3b57a-4311-436f-a8a7-0766eedcf56a",
+		"description": "静态资源包发布平台测试",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:4000/upload/pre",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"add pack\"] = jsonData.err === undefined;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/upload/pre",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "appId",
+							"value": "10001",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "version",
+							"value": "2.0.0",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "upload",
+							"value": "",
+							"type": "file",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/resource/pre/10001/2.0.0/CERT.json",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/resource/pre/10001/2.0.0/CERT.json",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/resource/pre/10001/2.0.0/Manifest.xml",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/resource/pre/10001/2.0.0/Manifest.xml",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/resource/pre/10001/2.0.0/10001.tar",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/resource/pre/10001/2.0.0/10001.tar",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/pack/add",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"add pack\"] = jsonData.err === undefined;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/pack/add",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"themeshop\",\n\t\"version\": \"2.0.0\",\n\t\"appId\": \"10001\",\n    \"params\": \"test\",\n \t\"dev\": \"http://dev.xiaoying.tv\",\n    \"pre\": \"http://pre.xiaoying.tv\",\n    \"prod\": \"http://prod.xiaoying.tv\"\n }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/pack",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"get all packs\"] = Object.isArray(jsonData) && jsonData.length > 0;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/pack",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": "获取所有 pack"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/pack/update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"update pack\"] = jsonData.affectedRows === 1;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/pack/update",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"home\",\n\t\"version\": \"2.0.0\",\n\t\"appId\": \"10001\",\n    \"params\": \"test\",\n \t\"dev\": \"http://dev.xiaoying.tv\",\n    \"pre\": \"http://pre.xiaoying.tv\",\n    \"prod\": \"http://prod.xiaoying.tv\"\n }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/pack/remove",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"remove pack\"] = jsonData.affectedRows === 1;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/pack/remove",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"version\": \"2.0.0\",\n\t\"appId\": \"10001\"\n }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/pack/add",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"add same pack\"] = jsonData.affectedRows === 1;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/pack/add",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"home\",\n\t\"version\": \"2.0.0\",\n\t\"appId\": \"10001\",\n    \"params\": \"test\",\n \t\"dev\": \"http://dev.xiaoying.tv\",\n    \"pre\": \"http://pre.xiaoying.tv\",\n    \"prod\": \"http://prod.xiaoying.tv\"\n }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/pack",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"get sepcify packs\"] = Object.isArray(jsonData) && jsonData.length > 0;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/pack?appId=10001&version=2.0.0",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/static/:appId",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"get version list by appId\"] = Object.isArray(jsonData);"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/static/10001",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:4000/static/:appId/:version",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": "tests[\"response code is 200\"] = responseCode.code === 200;\n\nvar jsonData = JSON.parse(responseBody);\ntests[\"get sepcify pack config\"] = jsonData.err === undefined;"
+					}
+				}
+			],
+			"request": {
+				"url": "localhost:4000/static/10001/2.0.0",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

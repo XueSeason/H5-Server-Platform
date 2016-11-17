@@ -1,6 +1,8 @@
 # H5 Server Platform
 
-A static web resource release platform for hybrid development.
+Hybrid 静态资源包发布平台
+
+线上环境：http://h5rs.api.xiaoying.co
 
 ## How to started
 
@@ -30,78 +32,181 @@ node app.js
 open http://localhost:4000
 ```
 
+## 测试
+
+采用 postman，需要全局安装 newman
+
+```bash
+npm i -g newman
+
+node app.js
+
+npm run test
+```
+
 ## API
 
-### GET /static/:appId/:version
+### GET /sr/:appId
 
-get static resource pack config
+获取指定 appId 所有版本号
+
+### GET /sr/:appId/latest
+
+获取指定 appId 最新版本号
+
+### GET /sr/:appId/:version
+
+获取静态资源配置接口
+
+请求参数：
+
+| Params   | Type  | Desc         | required |
+| -------- |:-----:| :------------|:--------:|
+| appId    | text  | 前端项目 ID   | true     |
+| version  | text  | 前端版本号    | true     |
+
+返回参数：
+
+| Params   | Type  | Desc |
+| -------- |:-----:| :----|
+| name     | text  | 前端项目名 |
+| params   | text  | JSBridge 启动参数 |
+| appUrl   | text  | 离线资源包地址 包含开发、预发布、生产环境 |
+| host     | text  | 域名映射 包含开发、预发布、生产环境 |
+| fallback | text  | 离线资源包 cdn 地址 |
+| cert     | text  | 离线资源包 cert 地址 |
+| manifest | text  | 离线资源包 manifest 地址 |
+
+出错情况：
+
+| Params   | Type  | Desc    |
+| -------- |:-----:| :-------|
+| err      | text  | 错误信息 |
+
+### Account
+
+POST /login
+
+用户认证
+
+请求参数：
+
+| Params   | Type  | required |
+| -------- |:-----:|:--------:|
+| username | text  | true     |
+| password | text  | true     |
+
+返回参数：
+
+| Params   | Type  | required |
+| -------- |:-----:|:--------:|
+| token    | text  | true     |
+
+POST /register
+
+用户注册
+
+请求参数：
+
+| Params   | Type  | required |
+| -------- |:-----:|:--------:|
+| username | text  | true     |
+| password | text  | true     |
+| mail     | text  | true     |
+
+返回参数：
+
+| Params   | Type  | required |
+| -------- |:-----:|:--------:|
+| token    | text  | true     |
+
+---
+**后续接口涉及到安全问题，需要认证**
 
 ### Pack
 
 #### GET /pack
 
-get all packs
+获取包信息，不带参数默认返回全部包信息
+
+请求参数
+
+| Params   | Type  | Desc              | required |
+| -------- |:-----:| :-----------------|:--------:|
+| name     | text  | 前端项目名          | false    |
+| appId    | text  | 前端项目 ID         | false    |
+| version  | text  | 前端版本号          | false    |
 
 #### POST /pack/add
 
-add new pack
+新增包到服务器
 
 post JSON params
 
-| Params   | Type  | Desc                       | required |
-| -------- |:-----:| :--------------------------|:--------:|
-| name     | text  | hybrid page name           | true     |
-| version  | text  | hybrid page version        | true     |
-| dev      | text  | dev env host map link      | true     |
-| pre      | text  | dev pre host map link      | true     |
-| prod     | text  | prod env host map link     | true     |
-| version  | text  | hybrid page version        | true     |
-| fallback | text  | cdn fallback download link | true     |
+| Params   | Type  | Desc              | required |
+| -------- |:-----:| :-----------------|:--------:|
+| name     | text  | 前端项目名          | true     |
+| appId    | text  | 前端项目 ID         | true     |
+| version  | text  | 前端版本号          | true     |
+| params   | text  | JSBridge 启动参数   | true     |
+| dev      | text  | 开发链接 host 映射   | true     |
+| pre      | text  | 预发布链接 host 映射 | true     |
+| prod     | text  | 生产链接 host 映射   | true     |
+
 
 #### POST /pack/update
 
-update pack
+更新包参数
 
 post JSON params
 
-| Params   | Type  | Desc                       | required |
-| -------- |:-----:| :--------------------------|:--------:|
-| app_id   | text  | pack id                    | true     |
-| version  | text  | hybrid page version        | true     |
-| name     | text  | hybrid page name           | false    |
-| dev      | text  | dev env host map link      | false    |
-| pre      | text  | dev pre host map link      | false    |
-| prod     | text  | prod env host map link     | false    |
-| version  | text  | hybrid page version        | false    |
-| fallback | text  | cdn fallback download link | false    |
+| Params   | Type  | Desc              | required |
+| -------- |:-----:| :-----------------|:--------:|
+| name     | text  | 前端项目名          | false     |
+| appId    | text  | 前端项目 ID         | true     |
+| version  | text  | 前端版本号          | true     |
+| params   | text  | JSBridge 启动参数   | false     |
+| dev      | text  | 开发链接 host 映射   | false     |
+| pre      | text  | 预发布链接 host 映射 | false     |
+| prod     | text  | 生产链接 host 映射   | false     |
 
 #### POST /pack/remove
 
-remove pack
+移除包
 
 post JSON params
 
-| Params   | Type  | Desc                       | required |
-| -------- |:-----:| :--------------------------|:--------:|
-| app_id   | text  | pack id                    | true     |
-| version  | text  | hybrid page version        | true     |
+| Params   | Type  | required |
+| -------- |:-----:|:--------:|
+| appId    | text  | true     |
+| version  | text  | true     |
 
 ### GET /resource/:branch/:appId/:version/:filename
 
-get specify file.
+得到服务器上指定资源文件，该接口供内部使用，App 端获取资源，请走 CDN 线路。
+
+### GET /resource/group
+
+获取可配置的资源组
+
+| Params  | Type  |
+| ------- |:-----:|
+| group   | array |
 
 ### POST /upload/:branch
 
-| Params  | Type  | Desc                  | required |
-| ------- |:-----:| :---------------------|:--------:|
-| appId   | text  | hybrid app id         | true     |
-| name    | text  | hybrid page name      | true     |
-| version | text  | hybrid page version   | true     |
-| upload  | file  | file must is tar file | true     |
+| Params  | Type  | required |
+| ------- |:-----:|:--------:|
+| appId   | text  | true     |
+| name    | text  | true     |
+| version | text  | true     |
+| upload  | file  | true     |
 
-post specify tar file or you can open / to upload file by friendly view.
+上传包到指定环境
 
-## Static resource structure
+## 静态资源包目录结构
+
+包目录结构
 
 ```markdown
 - ${appId}
@@ -111,7 +216,17 @@ post specify tar file or you can open / to upload file by friendly view.
     - Manifest.xml
 ```
 
-## Project structure and workflow
+## 安全验证
+
+出于安全因素的考虑，需要对 tar 包进行签名认证。
+
+我们会在本地生成**私钥**和**证书**
+
+服务端通过私钥对 tar 包进行签名，生成数字签名（signature）保存到 CERT.json 文件中。
+
+App 端从给定的证书中取出公钥，同时获取到服务器传来的数字签名，对 tar 进行验证。
+
+## 项目架构和实现流程
 
 ![](http://ww2.sinaimg.cn/large/aa0fbcc4gw1f980kccqxnj20gs0cut9j.jpg)
 
@@ -119,4 +234,4 @@ post specify tar file or you can open / to upload file by friendly view.
 
 ## Author
 
-@XueSeason
+[@XueSeason](<mailto:jijie.xue@quvide.com/>)

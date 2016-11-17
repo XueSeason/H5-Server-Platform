@@ -2,6 +2,13 @@ const fs = require('fs')
 const path = require('path')
 const shell = require('shelljs')
 
+/**
+ * 向指定目录下，将指定内容写入到指定文件中
+ * pathname 指定目录
+ * filename 指定文件名
+ * content 需要写入到内容
+ * cb 回调函数
+ */
 function writeFile (pathname, filename, content, cb) {
   if (!fs.existsSync(pathname)) {
     shell.mkdir('-p', pathname)
@@ -25,6 +32,11 @@ exports.writeFile = {
   _: writeFile
 }
 
+/**
+ * 递归删除指定目录下所有文件
+ * dir 指定目录
+ * cb 回调函数
+ */
 function clearDir (dir, cb) {
   if (!fs.existsSync(dir)) {
     cb('no such direcory.')

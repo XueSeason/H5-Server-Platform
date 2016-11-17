@@ -5,7 +5,8 @@ const util = require('util')
 
 const formidable = require('formidable')
 const package = require('../service/package')
-const resourceDao = require('../dao/resouceDao')
+const resourceDao = require('../dao/resourceDao')
+const oss = require('../service/oss')
 
 const express = require('express')
 const router = express.Router()
@@ -27,11 +28,15 @@ router.post('/:branch', function (req, res, next) {
       res.writeHead(200, { 'content-type': 'text/plain' })
       res.write(err.toString())
     }
+    // 打包到本地
     package(branch, fields.appId, fields.name, fields.version).then(() => {
-      req.body.app_id = fields.appId
-      req.body.version = fields.version
-      req.body.branch = branch
-      return resourceDao.add(req, res, next)
+      // 将资源信息登记到数据库
+      return resourceDao.add(fields.appId, fields.version, branch)
+    }).then(rows => {
+      res.writeHead(200, { 'content-type': 'application/json' })
+      res.end(JSON.stringify(rows))
+      // 上传到 OSS
+      oss.putResource(branch, fields.appId, fields.version)
     }).catch(err => {
       res.writeHead(200, { 'content-type': 'application/json' })
       res.end(JSON.stringify({ err: err.toString() }))

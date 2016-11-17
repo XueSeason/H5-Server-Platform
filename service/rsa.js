@@ -2,12 +2,15 @@ const fs = require('fs')
 const filepath = require('../config/filepath')
 const crypto = require('crypto')
 
+const privateKey = fs.readFileSync(filepath.keyPem, 'ascii')
+const publicKey = fs.readFileSync(filepath.certPem, 'ascii')
+const passphrase = require('../config/project').passphrase
+
 const _ = {
+  // 文件签名
   signFile: function (pathname, cb) {
     const sign = crypto.createSign('md5')
     const verify = crypto.createVerify('md5')
-
-    const privateKey = fs.readFileSync(filepath.keyPem, 'ascii')
 
     const s = fs.ReadStream(pathname)
     s.on('data', function (d) {
@@ -19,16 +22,15 @@ const _ = {
     s.on('end', function () {
       const signature = sign.sign({
         key: privateKey,
-        passphrase: 'xiaoying'
+        passphrase
       }) // generate signature
       cb(undefined, signature.toString('base64'))
     })
   },
+  // 文件验证
   verifyFile: function (pathname, signature, cb) {
     const sign = crypto.createSign('md5')
     const verify = crypto.createVerify('md5')
-
-    const publicKey = fs.readFileSync(filepath.certPem, 'ascii')
 
     const s = fs.ReadStream(pathname)
     s.on('data', function (d) {
@@ -44,6 +46,8 @@ const _ = {
   }
 }
 
+exports.privateKey = privateKey
+exports.publicKey = publicKey
 exports.rsa = _
 exports.promise = {
   signFile: function (pathname, cb) {

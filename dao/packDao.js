@@ -1,64 +1,66 @@
 const db = require('../common/db')
 const sql = require('./packSqlMapping')
 
-function all(req, res, next) {
-  db.query(sql.queryAll).then(rows => {
-    res.writeHead(200, { 'content-type': 'application/json' })
-    res.end(JSON.stringify(rows))
-  }).catch(err => {
-    res.writeHead(200, { 'content-type': 'application/json' })
-    res.end(JSON.stringify({ 'error': err.toString() }))
-  })
+/**
+ * post 为普通 JSON 对象进行条件过滤
+ * 支持 appId、version 和 name 查询
+ */
+function all(post) {
+  const record = {}
+  if (post.appId) record.app_id = post.appId
+  if (post.version) record.version = post.version
+  if (post.name) record.name = post.name
+  return db.query(sql.all(record))
 }
 
-function add(req, res, next) {
-  const values = []
-  values.push(req.body.name)
-  values.push(req.body.params)
-  values.push(req.body.dev)
-  values.push(req.body.pre)
-  values.push(req.body.prod)
-  values.push(req.body.version)
-  values.push(req.body.fallback)
-  values.push(req.body.app_id)
-  db.query(sql.queryByAppIdAndVersion, [req.body.app_id, req.body.version]).then(rows => {
+/**
+ * 添加 pack 信息时，首先会对同一 app_id 和 version 的包检测是否存在
+ * 如果存在，则更新 pack 信息，否则插入一条新字段
+ */
+function add(post) {
+  const record = {
+    app_id: post.appId,
+    version: post.version,
+    name: post.name,
+    params: post.params,
+    dev: post.dev,
+    pre: post.pre,
+    prod: post.prod
+  }
+  return db.query(sql.all({
+    app_id: record.app_id,
+    version: record.version
+  }, true)).then(rows => {
     if (Array.isArray(rows) && rows.length > 0) {
-      throw new Error('存在重复数据')
+      // 存在重复数据
+      return db.query(sql.update(record, record.app_id, record.version))
     } else {
-      return db.query(sql.insert, values)
+      return db.query(sql.insert, record)
     }
-  }).then(rows => {
-   res.writeHead(200, { 'content-type': 'application/json' })
-    res.end(JSON.stringify(rows))
-  }).catch(err => {
-    res.writeHead(200, { 'content-type': 'application/json' })
-    res.end(JSON.stringify({ 'error': err.toString() }))
   })
 }
 
-function remove(req, res, next) {
-  const appId = req.body.app_id
-  const version = req.body.version
-  db.query(sql.remove, [appId, version]).then(rows => {
-   res.writeHead(200, { 'content-type': 'application/json' })
-    res.end(JSON.stringify(rows))
-  }).catch(err => {
-    res.writeHead(200, { 'content-type': 'application/json' })
-    res.end(JSON.stringify({ 'error': err.toString() }))
-  })
+/**
+ * 此处移除并非真实移除数据库中字段，只是将 state 置为 0
+ */
+function remove(appId, version) {
+  return db.query(sql.remove, [appId, version])
 }
 
-function update(req, res, next) {
-  const appId = req.body.app_id
-  const version = req.body.version
-  const record = req.body
-  db.query(sql.update(record, appId, version)).then(rows => {
-   res.writeHead(200, { 'content-type': 'application/json' })
-    res.end(JSON.stringify(rows))
-  }).catch(err => {
-    res.writeHead(200, { 'content-type': 'application/json' })
-    res.end(JSON.stringify({ 'error': err.toString() }))
-  })
+/**
+ * 更新某个字段，此时 state 会被置为 1
+ */
+function update(post) {
+  const record = {
+    app_id: post.appId,
+    version: post.version,
+    name: post.name,
+    params: post.params,
+    dev: post.dev,
+    pre: post.pre,
+    prod: post.prod
+  }
+  return db.query(sql.update(record, record.app_id, record.version))
 }
 
 exports.all = all
